@@ -1,0 +1,11 @@
+INSERT INTO `mybatisdemo`.`tbl_department`(department_id,`department_name`, `local`) VALUES (5,'四号部门', '201');
+
+delete from `mybatisdemo`.`tbl_department` where department_id = 4
+
+UPDATE `mybatisdemo`.`tbl_department` SET `department_name` ='弟中弟', `local` = '202' WHERE `department_id` = 5
+
+SELECT * FROM `tbl_department` WHERE `department_id` = 5
+
+SELECT * FROM `tbl_department` WHERE `department_name` like "%号%"
+
+SELECT * FROM `tbl_department`
