@@ -14,8 +14,8 @@ import java.io.InputStream;
  */
 
 public class SqlSessionFactoryUtil {
-    private static SqlSessionFactory sqlSessionFactory;
-    private static final Class CLASS_LOCK = SqlSessionFactoryUtil.class;
+    private static SqlSessionFactory sqlSessionFactory=null;
+    private static final Class<SqlSessionFactoryUtil> CLASS_LOCK = SqlSessionFactoryUtil.class;
 
     /**
      * 私有化构造
@@ -25,23 +25,25 @@ public class SqlSessionFactoryUtil {
     /*
      * 单实例对象
      */
-    public static SqlSessionFactory initSqlSessionFactory(){
-        String resource = "conf/mybatis-config.xml";
-        InputStream inputStream = null;
-        try {
-            inputStream = Resources.getResourceAsStream(resource);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    public static SqlSessionFactory initSqlSessionFactory()  {
         synchronized (CLASS_LOCK){
-            if(sqlSessionFactory == null){
-                sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+            if(sqlSessionFactory != null){
+                return sqlSessionFactory;
             }
+            String resource = "conf/mybatis-config.xml";
+            InputStream inputStream = null;
+            try {
+                inputStream = Resources.getResourceAsStream(resource);
+                sqlSessionFactory= new SqlSessionFactoryBuilder().build(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return sqlSessionFactory;
         }
-        return sqlSessionFactory;
     }
 
-    public static SqlSession openSqlSession(){
+    public static SqlSession openSqlSession() throws IOException {
         if (sqlSessionFactory == null){
             initSqlSessionFactory();
         }

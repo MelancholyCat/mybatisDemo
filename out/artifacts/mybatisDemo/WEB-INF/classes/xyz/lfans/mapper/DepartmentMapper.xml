@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!--dtd约束文件，xml的标签的自动提示和补全功能需要添加xml dtd约束-->
+<mapper namespace="xyz.lfans.mapper.DepartmentMapper">
+
+    <!--
+    namespace：名称空间，就是对sql进行分类话管理，理解sql隔离
+                注意：使用mapper代理方法开发，namespace有特殊重要的作用
+    id：唯一标识，标识映射文件中的sql
+        因为将sql语句封装到mappedStatement对象中，所以将id称为statement的id
+    #{}：标识一个占位符号
+    #{local}：从传递过来的参数中取出local值
+            其中的local标识接收输入的参数，参数名称就是local，
+            如果输入参数是简单类型，#{}中的参数名可以任意，可以是value或其他名称
+    -->
+    <insert id="insertDepartment" parameterType="xyz.lfans.bean.Department">
+        INSERT INTO `mybatisdemo`.`tbl_department`(`department_name`, `local`)
+         VALUES (#{departmentName}, #{local});
+    </insert>
+
+    <delete id="deleteDepartmentById">
+        delete from `mybatisdemo`.`tbl_department` where department_id = #{id}
+    </delete>
+    <!--通过parameterType指定输入参数的类型
+                简单类型
+                hashmap
+                pojo的包装类型（包含复杂的查询条件）
+                    pojo
+                    其他信息
+            不建议使用parameterMap，parameterMap通常用于mapper中有多个参数要传进来时
+        -->
+    <update id="updateDepartment" parameterType="xyz.lfans.bean.Department">
+        UPDATE `mybatisdemo`.`tbl_department` SET `department_name` =#{departmentName}, `local` = #{local}
+         WHERE `department_id` = #{departmentId}
+    </update>
+    <!--
+            输出映射有两种方式
+                resultType
+                    pojo映射
+                        只有查询出来的列名和 pojo 中的属性名一致，该列才可以映射成功。
+                        如果查询出来的列名和 pojo 中的属性名全部不一致，没有创建 pojo 对象。
+                        只要查询出来的列名和 pojo 中的属性有一个一致，就会创建 pojo 对象。
+                    查询出来的结果集只有一行且一列，可以使用简单类型进行输出映射
+                    动态代理对象
+                        不管是输出的pojo单个对象还是一个列表（list中包括pojo），在mapper.xml中 `resultType` 指定的类型是一样的。
+                        生成的动态代理对象中是根据mapper方法的返回值类型确定是调用`selectOne`(返回单个对象调用)还是`selectList` （返回集合对象调用 ）
+                resultMap
+                    高级输出结果映射。(一对多，多对多)
+                    如果查询出来的列名和pojo的属性名不一致，通过定义一个resultMap对列名和pojo属性名之间作一个映射关系。
+                        定义resultMap
+                        使用resultMap作为statement的输出映射类型
+        -->
+    <select id="selectDepartmentById" resultType="xyz.lfans.bean.Department">
+        SELECT * FROM `tbl_department` WHERE `department_id` = #{departmentId}
+    </select>
+
+    <select id="selectDepartmentListByName" resultType="xyz.lfans.bean.Department" parameterType="java.lang.String">
+        SELECT * FROM `tbl_department` WHERE `department_name` like "%${value}%"
+    </select>
+
+    <select id="selectDepartmentList" resultType="xyz.lfans.bean.Department">
+        SELECT * FROM `tbl_department`
+    </select>
+
+</mapper>

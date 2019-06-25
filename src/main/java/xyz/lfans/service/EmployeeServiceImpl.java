@@ -7,6 +7,7 @@ import xyz.lfans.mapper.DepartmentMapper;
 import xyz.lfans.mapper.EmployeeMapper;
 import xyz.lfans.utils.SqlSessionFactoryUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -69,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public Employee searchEmployeeByEmployeeId(Integer employeeId) {
+    public Employee searchEmployeeByEmployeeId(Integer employeeId) throws IOException {
         Employee employee = null;
         SqlSession sqlSession = SqlSessionFactoryUtil.openSqlSession();
         EmployeeMapper employeeMapper = sqlSession.getMapper(EmployeeMapper.class);
@@ -87,7 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public List<Employee> searchEmployeeListByName(String employeeName) {
+    public List<Employee> searchEmployeeListByName(String employeeName) throws IOException {
         Employee employee = new Employee();
         employee.setEmployeeName(employeeName);
         List<Employee> employeeList = null;
@@ -107,7 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public List<Employee> searchEmployeeList() {
+    public List<Employee> searchEmployeeList() throws IOException {
         List<Employee> employeeList = null;
         SqlSession sqlSession = SqlSessionFactoryUtil.openSqlSession();
         EmployeeMapper employeeMapper = sqlSession.getMapper(EmployeeMapper.class);
@@ -125,7 +126,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public List<Employee> searchEmployeeByDepartmentId(Integer departmentId) {
+    public List<Employee> searchEmployeeByDepartmentId(Integer departmentId) throws IOException {
         Employee employee = new Employee();
         employee.setEmployeeId(departmentId);
         List<Employee> employeeList = null;

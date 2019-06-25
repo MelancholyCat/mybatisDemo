@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lfans.mapper.EmployeeMapper">
+
+    <resultMap type="xyz.lfans.bean.Employee" id="employee">
+        <id column="employeeId" property="employee_id" />
+        <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+        <result column="wages" property="wages" />
+        <result column="departmentId" property="department_id" />
+        <result column="employeeName" property="employee_name" />
+    </resultMap>
+
+    <insert id="insertEmployee" parameterType="xyz.lfans.bean.Employee">
+        INSERT INTO `mybatisdemo`.`tbl_employee`( `birthday`, `wages`, `department_id`, `employee_name`)
+         VALUES ( #{birthday}, #{wages}, #{departmentId},#{employeeName});
+    </insert>
+
+    <delete id="deleteEmployeeById">
+        delete from `mybatisdemo`.`tbl_employee` where employee_id = #{id}
+    </delete>
+
+    <update id="updateEmployee" parameterType="xyz.lfans.bean.Employee">
+        UPDATE `mybatisdemo`.`tbl_employee` SET `birthday` = #{birthday}, `wages` = #{wages},
+         `department_id` = #{departmentId}, `employee_name` = #{employeeName}
+          WHERE `employee_id` = #{employeeId};
+    </update>
+
+    <select id="selectEmployeeById" resultMap="employee">
+        SELECT * FROM `mybatisdemo`.`tbl_employee` WHERE `employee_id` = #{employeeId}
+    </select>
+
+    <select id="selectEmployeeList" resultMap="employee">
+        SELECT * FROM `tbl_employee`
+    </select>
+
+    <select id="selectEmployeeListByEmployee" parameterType="xyz.lfans.bean.Employee" resultMap="employee">
+        SELECT * FROM `tbl_employee`
+        <where>
+            <choose>
+                <when test="employeeName != null and employeeName != ''">
+                    AND `employee_name` like '%${employeeName}%'
+                </when>
+                <when test="departmentId != null and departmentId != ''">
+                    AND `department_id` = #{departmentId}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+</mapper>

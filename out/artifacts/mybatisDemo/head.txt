@@ -1,0 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<div align="center">
+  <Font color=red><H3>部门雇员管理</H3></Font>
+  <table  cellSpacing="1" cellPadding="1" width="660" align="center" border="0">
+   <tr valign="bottom">
+    <td><A href="SearchDepartmentList">部门管理</font></A></td>
+    <td><A href="SearchEmpList">雇员管理</A></td>
+   </tr>
+  </table>
+</div>
